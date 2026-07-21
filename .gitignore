@@ -1,0 +1,13 @@
+.terraform/
+*.tfstate**.tfstate.*
+.terraform.lock.hcl
+
+.env
+
+*.pem
+id_rsa
+id_rsa.pub
+
+.vscode/
+
+.DS_Store
