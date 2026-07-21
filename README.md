@@ -1,49 +1,75 @@
 # Azure LAMP Platform
 
-Plataforma Infrastructure as Code (IaC) para desplegar y gestionar un entorno completo basado en:
+Plataforma Infrastructure as Code (IaC) para desplegar, automatizar y monitorizar aplicaciones PHP utilizando tecnologías modernas de DevOps, CI/CD y observabilidad.
 
-- Azure
+## Tecnologías
+
+- Azure (en preparación)
 - Terraform
 - Ansible
 - Jenkins
-- Apache
-- PHP
-- MySQL
 - Docker
+- Apache
+- PHP 8.3
+- MySQL 8.4
+- Prometheus
+- Node Exporter
 - GitHub Actions
 
 ---
 
-# Arquitectura
+# Objetivos del Proyecto
+
+Este proyecto persigue los siguientes objetivos:
+
+- Automatización completa de infraestructura.
+- Configuración como código.
+- Integración continua y despliegue continuo (CI/CD).
+- Observabilidad y monitorización.
+- Entornos reproducibles.
+- Preparación para despliegues en Azure.
+
+---
+
+# Arquitectura Actual
 
 ```text
-GitHub
-   ↓
-GitHub Actions
-   ↓
-Terraform
-   ↓
-Azure
-   ↓
-Ansible
-   ↓
-Jenkins
-   ↓
-Aplicaciones PHP
+Docker Compose
+│
+├── Jenkins
+├── PHP + Apache
+├── MySQL
+├── phpMyAdmin
+│
+├── Prometheus
+└── Node Exporter
 ```
 
 ---
 
-# Entorno Local
+# Arquitectura Objetivo
 
-Actualmente el proyecto permite levantar un entorno completo de desarrollo utilizando Docker Compose.
-
-Servicios incluidos:
-
-- Jenkins
-- PHP 8.3 + Apache
-- MySQL 8.4
-- phpMyAdmin
+```text
+GitHub
+   │
+   ▼
+GitHub Actions
+   │
+   ▼
+Terraform
+   │
+   ▼
+Azure
+   │
+   ▼
+Ansible
+   │
+   ▼
+Jenkins
+   │
+   ▼
+Aplicación PHP
+```
 
 ---
 
@@ -53,24 +79,31 @@ Servicios incluidos:
 
 - Docker Desktop
 - WSL2
+- Git
 
 ## Linux
 
-- Docker Engine
+- Docker
 - Docker Compose
+- Git
 
-Verificación:
+---
+
+# Verificación de instalación
 
 ```bash
 docker --version
+
 docker compose version
+
+git --version
 ```
 
 ---
 
-# Primer Arranque
+# Instalación
 
-## Clonar el repositorio
+## Clonar repositorio
 
 ```bash
 git clone https://github.com/fmartinezaltolaguirre/azure-lamp-platform.git
@@ -78,19 +111,25 @@ git clone https://github.com/fmartinezaltolaguirre/azure-lamp-platform.git
 cd azure-lamp-platform
 ```
 
-## Crear variables de entorno
+---
+
+## Crear fichero de configuración
 
 ```bash
 cp .env.example .env
 ```
 
-## Levantar la plataforma
+---
+
+## Levantar entorno
 
 ```bash
-docker compose up -d
+docker compose up -d --build
 ```
 
-## Verificar servicios
+---
+
+## Comprobar estado
 
 ```bash
 docker ps
@@ -98,11 +137,21 @@ docker ps
 
 ---
 
-# Acceso a Servicios
+# Servicios Disponibles
 
-## Jenkins
+| Servicio | URL |
+|-----------|-----------|
+| Jenkins | http://localhost:8080 |
+| Aplicación PHP | http://localhost:8082 |
+| phpMyAdmin | http://localhost:8081 |
+| Prometheus | http://localhost:9091 |
+| Node Exporter | http://localhost:9100/metrics |
 
-URL:
+---
+
+# Jenkins
+
+Acceso:
 
 ```text
 http://localhost:8080
@@ -116,37 +165,125 @@ docker exec jenkins cat /var/jenkins_home/secrets/initialAdminPassword
 
 ---
 
-## Aplicación PHP
+# Aplicación PHP
 
-URL:
+Acceso:
 
 ```text
 http://localhost:8082
 ```
 
+Aplicación de ejemplo utilizada para validar despliegues y futuras pipelines CI/CD.
+
 ---
 
-## phpMyAdmin
+# phpMyAdmin
 
-URL:
+Acceso:
 
 ```text
 http://localhost:8081
 ```
 
-Parámetros de conexión:
+Credenciales por defecto:
 
 ```text
 Servidor: mysql
+
 Usuario: appuser
+
 Contraseña: apppassword
 ```
 
 ---
 
-# Configuración
+# Prometheus
 
-## Variables de entorno
+Prometheus es el sistema de recolección y almacenamiento de métricas de la plataforma.
+
+Acceso:
+
+```text
+http://localhost:9091
+```
+
+---
+
+## Targets configurados
+
+Actualmente Prometheus monitoriza:
+
+- Prometheus
+- Node Exporter
+
+Comprobar estado:
+
+```text
+Status → Target Health
+```
+
+Todos los targets deben aparecer como:
+
+```text
+UP
+```
+
+---
+
+## Consultas PromQL útiles
+
+### CPU
+
+```promql
+rate(node_cpu_seconds_total[5m])
+```
+
+### Memoria disponible
+
+```promql
+node_memory_MemAvailable_bytes
+```
+
+### Memoria total
+
+```promql
+node_memory_MemTotal_bytes
+```
+
+### Uso de disco
+
+```promql
+node_filesystem_size_bytes
+```
+
+---
+
+# Node Exporter
+
+Node Exporter proporciona métricas del sistema operativo y del host Docker.
+
+Acceso directo:
+
+```text
+http://localhost:9100/metrics
+```
+
+---
+
+## Métricas disponibles
+
+- CPU
+- RAM
+- Disco
+- Sistema de archivos
+- Interfaces de red
+- Load Average
+- Procesos
+- Estadísticas del kernel
+
+---
+
+# Variables de Entorno
 
 Archivo:
 
@@ -179,26 +316,33 @@ azure-lamp-platform/
 │   └── workflows/
 │
 ├── terraform/
+│   ├── modules/
+│   └── environments/
 │
 ├── ansible/
+│   ├── inventory/
+│   └── roles/
 │
 ├── jenkins/
 │   ├── casc/
+│   ├── jobs/
 │   ├── plugins.txt
 │   └── Dockerfile
 │
-├── pipelines/
-│
 ├── app/
 │   └── sample-php-app/
+│
+├── monitoring/
+│   └── prometheus/
+│       └── prometheus.yml
 │
 ├── docs/
 │
 ├── scripts/
 │
 ├── docker-compose.yml
-├── .env.example
 ├── README.md
+├── .env.example
 └── .gitignore
 ```
 
@@ -210,6 +354,12 @@ azure-lamp-platform/
 
 ```bash
 docker compose up -d
+```
+
+## Reconstruir imágenes
+
+```bash
+docker compose up -d --build
 ```
 
 ## Detener servicios
@@ -224,7 +374,7 @@ docker compose down
 docker compose restart
 ```
 
-## Ver contenedores
+## Ver estado
 
 ```bash
 docker ps
@@ -236,37 +386,46 @@ docker ps
 docker compose logs -f
 ```
 
-## Reconstruir imágenes
+## Logs de un servicio
 
 ```bash
-docker compose build --no-cache
-```
+docker compose logs -f prometheus
 
-## Reconstruir y arrancar
+docker compose logs -f jenkins
 
-```bash
-docker compose up -d --build
+docker compose logs -f mysql
 ```
 
 ---
 
-# Desarrollo
+# Estado Actual
 
-## Modificar la aplicación PHP
+## Plataforma
 
-Los archivos de la aplicación se encuentran en:
+- [x] Docker Compose
+- [x] Jenkins
+- [x] PHP 8.3 + Apache
+- [x] MySQL 8.4
+- [x] phpMyAdmin
 
-```text
-app/sample-php-app/public
-```
+## Monitorización
 
-Ejemplo:
+- [x] Prometheus
+- [x] Node Exporter
+- [ ] Grafana
+- [ ] Alertmanager
+- [ ] cAdvisor
+- [ ] Loki
+- [ ] Promtail
+- [ ] OpenTelemetry
+- [ ] Jaeger
 
-```text
-app/sample-php-app/public/index.php
-```
+## Infraestructura
 
-Los cambios estarán disponibles inmediatamente gracias al volumen Docker configurado.
+- [x] Estructura Terraform
+- [x] Estructura Ansible
+- [x] Jenkins as Code
+- [ ] Azure Deployment
 
 ---
 
@@ -274,108 +433,98 @@ Los cambios estarán disponibles inmediatamente gracias al volumen Docker config
 
 ## Fase 1
 
-- [x] Estructura del repositorio
-- [x] Docker Compose
-- [x] Jenkins
-- [x] PHP + Apache
-- [x] MySQL
-- [x] phpMyAdmin
+- Repositorio GitHub
+- Docker Compose
+- Jenkins
+- PHP
+- MySQL
+- phpMyAdmin
 
 ## Fase 2
 
-- [ ] Jenkins Configuration as Code
-- [ ] Shared Library Jenkins
-- [ ] Integración GitHub
-- [ ] Webhooks
-- [ ] Pipelines automáticos
+- Prometheus
+- Node Exporter
+- Grafana
+- Alertmanager
+- cAdvisor
 
 ## Fase 3
 
-- [ ] Terraform Azure
-- [ ] Ansible Automation
-- [ ] Provisioning automático
-- [ ] Entornos DEV
+- Jenkins Shared Library
+- CI/CD
+- GitHub Webhooks
 
 ## Fase 4
 
-- [ ] Entornos QA
-- [ ] Entornos PROD
-- [ ] Azure Database for MySQL
-- [ ] Azure Key Vault
+- Terraform Azure
+- Provisioning automático
+- Entorno DEV
 
 ## Fase 5
 
-- [ ] Observabilidad
-- [ ] Prometheus
-- [ ] OpenTelemetry
-- [ ] Jaeger
-- [ ] Dashboards
+- QA
+- Producción
+- Azure Database for MySQL
+- Azure Key Vault
+
+## Fase 6
+
+- Loki
+- OpenTelemetry
+- Jaeger
+- Dashboards avanzados
 
 ---
 
 # Seguridad
 
-No subir nunca al repositorio:
+Nunca subir al repositorio:
 
 ```text
 .env
 *.pem
 *.key
 *.pfx
-*.tfsta*e
+*.tfstate
 terraform.tfvars
 id_rsa
-id_ed255*9
+id_ed25519
 ```
 
-Verifica que los archivos s*nsibles están incluidos en `.gitig*ore`.
+Verificar que estos elementos aparecen en `.gitignore`.
 
 ---
 
 # Versionado
 
-Crear un* release:
+Crear una nueva versión:
 
 ```bash
 git tag v0.1.0
-*git push origin v0.1.0
+
+git push origin v0.1.0
 ```
 
-Ver et*quetas:
+Listar versiones:
 
 ```bash
 git tag
 ```
 
 ---
-*# Contribución
 
-1. Crear rama:
+# Autor
 
-``*bash
-git checkout -b feature/nueva*funcionalidad
+Fernando Martínez Altolaguirre
+
+Repositorio:
+
+```text
+https://github.com/fmartinezaltolaguirre/azure-lamp-platform
 ```
-
-2. Realizar cam*ios.
-
-3. Commit:
-
-```bash
-git comm*t -m "Add new feature"
-```
-
-4. Pus*:
-
-```bash
-git push origin feature*nueva-funcionalidad
-```
-
-5. Crear *ull Request.
 
 ---
 
 # Licencia
 
-MIT*License
-
-Copyright © Fernando Mart*nez Altolaguirre
+MIT License
