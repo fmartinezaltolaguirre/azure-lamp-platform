@@ -1,27 +1,35 @@
+@Library('shared-library') _
+
 pipeline {
 
     agent any
+
+    parameters {
+
+        choice(
+            name: 'ENVIRONMENT',
+            choices: [
+                'dev',
+                'qa',
+                'prod'
+            ]
+        )
+
+    }
 
     stages {
 
         stage('Build') {
             steps {
-                echo 'Build PHP Application'
-            }
-        }
-
-        stage('Test') {
-            steps {
-                echo 'Run Tests'
+                buildPhp()
             }
         }
 
         stage('Deploy') {
             steps {
-                echo 'Deploy Application'
+                deployApp(params.ENVIRONMENT)
             }
         }
 
     }
-
 }
