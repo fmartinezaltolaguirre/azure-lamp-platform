@@ -1,0 +1,21 @@
+pipeline {
+
+    agent any
+
+    stages {
+
+        stage('Validate Terraform') {
+            steps {
+                sh 'terraform validate'
+            }
+        }
+
+        stage('Terraform Plan') {
+            steps {
+                sh 'terraform plan'
+            }
+        }
+
+    }
+
+}
