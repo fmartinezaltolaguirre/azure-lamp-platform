@@ -13,3 +13,13 @@ Proyecto IaC para desplegar:
 ## Arquitectura
 
 GitHub -> Terraform -> Azure -> Ansible -> Jenkins -> Aplicaciones
+
+
+## Roadmap
+- [x] Repositorio
+- [ ] Terraform
+- [ ] Azure
+- [ ] Ansible
+- [ ] Jenkins
+- [ ] CI/CD
+- [ ] Producción

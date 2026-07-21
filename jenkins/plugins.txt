@@ -1,0 +1,9 @@
+git
+github
+workflow-aggregator
+configuration-as-code
+ssh-agent
+ansicolor
+blueocean
+job-dsl
+publish-over-ssh
