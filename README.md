@@ -14,12 +14,14 @@ Proyecto IaC para desplegar:
 
 GitHub -> Terraform -> Azure -> Ansible -> Jenkins -> Aplicaciones
 
-
 ## Roadmap
-- [x] Repositorio
-- [ ] Terraform
-- [ ] Azure
-- [ ] Ansible
-- [ ] Jenkins
+
+- [x] Repository
+- [x] Jenkins as Code
+- [x] Sample PHP App
+- [x] Terraform Modules
+- [ ] Azure Deployment
+- [ ] Ansible Roles
+- [ ] Jenkins Automation
 - [ ] CI/CD
-- [ ] Producción
+- [ ] Production
