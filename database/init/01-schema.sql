@@ -1,0 +1,9 @@
+CREATE TABLE deployments(
+
+    id INT AUTO_INCREMENT PRIMARY KEY,
+
+    version VARCHAR(50),
+
+    deployed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+
+);
