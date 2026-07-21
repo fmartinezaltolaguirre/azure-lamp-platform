@@ -1,0 +1,29 @@
+---
+- name: Install Java
+  apt:
+    name: openjdk-21-jdk
+    state: present
+
+- name: Add Jenkins key
+  shell: |
+    curl -fsSL https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key \
+    | tee /usr/share/keyrings/jenkins-keyring.asc >/dev/null
+
+- name: Add Jenkins repo
+  copy:
+    dest: /etc/apt/sources.list.d/jenkins.list
+    content: |
+      deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] \
+      https://pkg.jenkins.io/debian-stable binary/
+
+- name: Install Jenkins
+  apt:
+    update_cache: yes
+    name: jenkins
+    state: present
+
+- name: Enable Jenkins
+  service:
+    name: jenkins
+    state: started
+    enabled: true

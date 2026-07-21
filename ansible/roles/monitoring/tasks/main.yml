@@ -1,0 +1,8 @@
+---
+- name: Install monitoring tools
+  apt:
+    name:
+      - htop
+      - net-tools
+      - sysstat
+    state: present

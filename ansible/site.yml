@@ -1,0 +1,22 @@
+---
+- hosts: all
+  become: true
+
+  roles:
+    - common
+
+- hosts: web
+  become: true
+
+  roles:
+    - apache
+    - php
+    - mysql
+    - certbot
+
+- hosts: jenkins
+  become: true
+
+  roles:
+    - jenkins
+    - monitoring

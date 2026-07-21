@@ -1,0 +1,12 @@
+---
+- name: Install PHP
+  apt:
+    name:
+      - php
+      - php-cli
+      - php-common
+      - php-curl
+      - php-xml
+      - php-mysql
+      - libapache2-mod-php
+    state: present

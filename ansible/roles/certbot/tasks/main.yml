@@ -1,0 +1,7 @@
+---
+- name: Install Certbot
+  apt:
+    name:
+      - certbot
+      - python3-certbot-apache
+    state: present

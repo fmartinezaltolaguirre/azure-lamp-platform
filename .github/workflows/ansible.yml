@@ -1,0 +1,27 @@
+name: Validate Ansible
+
+on:
+  push:
+    paths:
+      - "ansible/**"
+
+jobs:
+
+  test:
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - uses: actions/checkout@v4
+
+      - name: Install Ansible
+        run: |
+          sudo apt update
+          sudo apt install ansible -y
+
+      - name: Syntax Check
+        run: |
+          ansible-playbook \
+          --syntax-check \
+          ansible/site.yml
