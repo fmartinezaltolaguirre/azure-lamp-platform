@@ -1,3 +1,12 @@
+
+![Docker](https://img.shields.io/badge/Docker-Containerized-blue?logo=docker&logoColor=white)
+![Kubernetes](https://img.shields.io/badge/Kubernetes-Orchestrated-326CE5?logo=kubernetes&logoColor=white)
+![GitHub Actions](https://img.shields.io/badge/GitHub%20Actions-CI%2FCD-2088FF?logo=github&logoColor=white)
+![Node.js](https://img.shields.io/badge/Node.js-22.x-green?logo=node.js&logoColor=white)
+![Terraform](https://img.shields.io/badge/Terraform-IaC-623CE4?logo=terraform&logoColor=white)
+![License](https://img.shields.io/badge/License-ISC-blue)
+
+
 # Azure LAMP Platform
 
 Plataforma Infrastructure as Code (IaC) para desplegar, automatizar y monitorizar aplicaciones PHP utilizando tecnologías modernas de DevOps, CI/CD y observabilidad.
