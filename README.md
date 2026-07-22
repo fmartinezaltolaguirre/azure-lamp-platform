@@ -7,7 +7,8 @@
 ![License](https://img.shields.io/badge/License-ISC-blue)
 ![Platform](https://img.shields.io/badge/Platform-Microsoft_Azure-0078D4?ftazure&logoColor=white)
 ![Status](https://img.shields.io/badge_Development-orange)
- 
+![MySQL](https://img.shields.io/badge/mysql-4479A1.svg?style=for-the-badge&logo=mysql&logoColor=white)
+
 # Azure LAMP Platform
 
 Plataforma Infrastructure as Code (IaC) para desplegar, automatizar y monitorizar aplicaciones PHP utilizando tecnologías modernas de DevOps, CI/CD y observabilidad.
